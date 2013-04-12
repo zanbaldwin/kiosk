@@ -71,7 +71,7 @@ install_kiosk() {
         \"{\\\"pattern\\\":\\\"$URL_PROTOCOL://$URL_DOMAIN\\\",\\\"filter\\\": {\\\"ISSUER\\\":{\\\"CN\\\":\\\"$CACN\\\"}}}\"
     ],
     \"HomepageLocation\": \"$URL_PROTOCOL://$URL_DOMAIN/$URL_PATH\"
-}" > /etc/chromium/policies/managed/nosco-systems.json
+}" > /etc/chromium/policies/managed/kiosk.json
     # Configuration for Slim
     echo "default_user kiosk" >> /etc/slim.conf
     echo "auto_login yes" >> /etc/slim.conf
