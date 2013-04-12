@@ -14,13 +14,8 @@
 
 TITLE="Kiosk Setup"
 
-kiosk_install() {
+install_kiosk() {
 
-    # PACKAGES.
-
-}
-
-setup_kiosk() {
     INSTALLCERT="$1"
     # Ask what URL the Web Kiosk should load when it starts.
     URL=$(whiptail --inputbox "Please enter the path of the full URL you wish the Kiosk to point to (for example, \"http://example.com/kiosk/home.php\"):" --title "$TITLE" 10 78 3>&1 1>&2 2>&3)
@@ -43,6 +38,8 @@ setup_kiosk() {
         URL_PROTOCOL="https"
         CACN=$(whiptail --inputbox "Please enter the exact Common Name of the Certification Authority that signs the PKCS#12 certificate for this Kiosk (for example, \"My Company Kiosk CA\"):" 10 78 --title "$TITLE" 3>&1 1>&2 2>&3)
     fi
+
+    # END OF KIOSK CONFIGURATION. START INSTALLATION.
 
     # Update package repository lists.
     apt-get update
@@ -148,7 +145,7 @@ if [ "$AUTOLOGIN" -eq 0 ]; then
         if [ $CERTDOWNLOADED = 0 ]; then
             P12SIZE=$(stat -c %s /tmp/kiosk.p12)
             if [ $P12SIZE -ne 0 ]; then
-                setup_kiosk 1
+                install_kiosk 1
             else
                 whiptail --title "$TITLE" --msgbox "The certificate downloaded for the Kiosk ID you specified is not valid. Setup has been cancelled." 10 78
             fi
@@ -160,7 +157,7 @@ if [ "$AUTOLOGIN" -eq 0 ]; then
     fi
 else
     whiptail --title "$TITLE" --msgbox "You may have to manually login to the Kiosk each time you turn the machine on." 10 78
-    setup_kiosk 0
+    install_kiosk 0
 fi
 
 # If you get here it means this script did not complete correctly. Exit with an error status.
