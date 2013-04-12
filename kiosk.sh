@@ -4,8 +4,8 @@
 #
 # Setup a Web Kiosk on a Debian-based system.
 # This script has been customised for use on a fresh installation of Raspbian
-# Wheezy, so many unnecessary packages may still remain on your system causing complications with the current setup if
-# you use another distribution.
+# Wheezy, so many unnecessary packages may still remain on your system causing
+# complications with the current setup if you use another distribution.
 #
 # @author       Zander Baldwin <mynameiszanders@gmail.com>
 # @license      MIT/X11 <http://j.mp/mit-license>
@@ -17,10 +17,26 @@ TITLE="Kiosk Setup"
 install_kiosk() {
 
     INSTALLCERT="$1"
+
+    CACN=""
+    URL_PROTOCOL=""
+    if [ $INSTALLCERT -eq 1 ]; then
+        # If we are using Client Certificates, then we must specify HTTPS,
+        # otherwise they don't get sent.
+        URL_PROTOCOL="https"
+        # Ask what the Common Name of the Certification Authority that signed
+        # the Client Certificates is, that way we can instruct Chromium to
+        # automatically select it when visiting the website.
+        CACN=$(whiptail --inputbox "Please enter the exact Common Name of the Certification Authority that signs the PKCS#12 certificate for this Kiosk (for example, \"My Company Kiosk CA\"):" 10 78 --title "$TITLE" 3>&1 1>&2 2>&3)
+    fi
+
     # Ask what URL the Web Kiosk should load when it starts.
     URL=$(whiptail --inputbox "Please enter the path of the full URL you wish the Kiosk to point to (for example, \"http://example.com/kiosk/home.php\"):" --title "$TITLE" 10 78 3>&1 1>&2 2>&3)
-    # Strip out "://" and everything after it.
-    URL_PROTOCOL=${URL%%://*}
+    # Determine the protocol of the URL.
+    if [ $URL_PROTOCOL = "" ]; then
+        # Strip out "://" and everything after it.
+        URL_PROTOCOL=${URL%%://*}
+    fi
     # Strip out "://" and everything before it, then strip out the first "/" and
     # everything after it.
     URL_DOMAIN=${URL#*://}
@@ -32,11 +48,6 @@ install_kiosk() {
     # returned the entire URL. Set an empty string if this is the case.
     if [ $URL = $URL_PATH ]; then
         URL_PATH=""
-    fi
-    CACN=""
-    if [ $INSTALLCERT -eq 1 ]; then
-        URL_PROTOCOL="https"
-        CACN=$(whiptail --inputbox "Please enter the exact Common Name of the Certification Authority that signs the PKCS#12 certificate for this Kiosk (for example, \"My Company Kiosk CA\"):" 10 78 --title "$TITLE" 3>&1 1>&2 2>&3)
     fi
 
     # END OF KIOSK CONFIGURATION. START INSTALLATION.
