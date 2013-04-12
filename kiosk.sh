@@ -115,7 +115,8 @@ EOF
     # the session.
     cp -r /home/kiosk /opt/
 
-    # You may wish to perform additional actions as the root user before booting into the Web Kiosk.
+    # You may wish to perform additional actions as the root user before booting
+    # into the Web Kiosk.
     whiptail --yesno "Would you like to reboot into the Web Kiosk now?" 20 60 2
     if [ $? -eq 0 ]; then
         sync
@@ -142,7 +143,6 @@ if [ ${#WHIPTAILPATH} -eq 0 ]; then
 fi
 
 # Ask whether to setup automatic login via client certificates.
-#AUTOLOGIN=$(whiptail --title $TITLE --yesno "Would you like to setup automatic login, via certificates, or manual login, via username and password?" 20 60 2 --yes-button "Automatic" --no-button "Manual")
 whiptail --yesno "Would you like to setup automatic login, via certificates, or manual login, via username and password?" 10 60 2 --yes-button "Automatic" --no-button "Manual"
 AUTOLOGIN=$?
 
@@ -171,5 +171,6 @@ else
     install_kiosk 0
 fi
 
-# If you get here it means this script did not complete correctly. Exit with an error status.
+# If you get here it means this script did not complete correctly. Exit with an
+# error status.
 exit 1
