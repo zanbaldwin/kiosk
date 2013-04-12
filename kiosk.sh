@@ -66,14 +66,12 @@ install_kiosk() {
     # Configuration for Chromium
     mkdir -p /etc/chromium/policies/managed
     touch /etc/chromium/policies/managed/kiosk.json
-    echo <<\EOF  > /etc/chromium/policies/managed/nosco-systems.json
-{
-    "AutoSelectCertificateForUrls": [
-        "{\"pattern\":\"$URL_PROTOCOL://$URL_DOMAIN\",\"filter\": {\"ISSUER\":{\"CN\":\"$CACN\"}}}"
+    echo "{
+    \"AutoSelectCertificateForUrls\": [
+        \"{\\\"pattern\\\":\\\"$URL_PROTOCOL://$URL_DOMAIN\\\",\\\"filter\\\": {\\\"ISSUER\\\":{\\\"CN\\\":\\\"$CACN\\\"}}}\"
     ],
-    "HomepageLocation": "$URL_PROTOCOL://$URL_DOMAIN/$URL_PATH"
-}
-EOF
+    \"HomepageLocation\": \"$URL_PROTOCOL://$URL_DOMAIN/$URL_PATH\"
+}" > /etc/chromium/policies/managed/nosco-systems.json
     # Configuration for Slim
     echo "default_user kiosk" >> /etc/slim.conf
     echo "auto_login yes" >> /etc/slim.conf
@@ -84,15 +82,13 @@ EOF
     useradd -m -U kiosk
     chmod -R a+r /home/kiosk
     touch /home/kiosk/.xsession
-    echo <<\EOF > /home/kiosk/.xsession
-xset s off
+    echo "xset s off
 xset -dpms
 matchbox-window-manager &
 while true; do
     rsync -qr --delete --exclude='.Xauthority' /opt/kiosk/ \$HOME/
     chromium-browser --kiosk
-done
-EOF
+done" > /home/kiosk/.xsession
     chmod a+x /home/kiosk/.xsession
     cp /home/kiosk/.xsession /home/kiosk/.xinitrc
 
