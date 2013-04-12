@@ -1,9 +1,16 @@
+TITLE="Kiosk Setup"
+
 setup_kiosk() {
     INSTALLCERT="$1"
 
-    DOMAIN=""
-    URL=""
+    PROTOCOL="http"
+    DOMAIN=$(whiptail --inputbox "Please enter the domain of the URL you wish the Kiosk to point to (for example, \"example.com\"):" 8 78 --title "$TITLE" 3>&1 1>&2 2>&3 | sed "s#/*$##g")
+    URL=$(whiptail --inputbox "Please enter the path of the URL you wish the Kiosk to point to (for example, \"/kiosk/home.php\"):" 8 78 --title "$TITLE" 3>&1 1>&2 2>&3 | sed "s#^/*##g")
     CACN=""
+    if [ $INSTALLCERT -eq 1 ]; then
+        PROTOCOL="https"
+        CACN=$(whiptail --inputbox "Please enter the exact Common Name of the Certification Authority that signs the PKCS#12 certificate for this Kiosk (for example, \"My Company Kiosk CA\"):" 8 78 --title "$TITLE" 3>&1 1>&2 2>&3)
+    fi
 
     # PACKAGES
     # ========
@@ -25,9 +32,9 @@ setup_kiosk() {
     touch /etc/chromium/policies/managed/kiosk.json
     echo "{
     \"AutoSelectCertificateForUrls\": [
-        \"{\\\"pattern\\\":\\\"$DOMAIN\\\",\\\"filter\\\": {\\\"ISSUER\\\":{\\\"CN\\\":\\\"$CACN\\\"}}}\"
+        \"{\\\"pattern\\\":\\\"https://$DOMAIN\\\",\\\"filter\\\": {\\\"ISSUER\\\":{\\\"CN\\\":\\\"$CACN\\\"}}}\"
     ],
-    \"HomepageLocation\": \"$DOMAIN/$URL\"
+    \"HomepageLocation\": \"$PROTOCOL://$DOMAIN/$URL\"
 }" > /etc/chromium/policies/managed/kiosk.json
 
     # Configuration for Slim
@@ -45,7 +52,7 @@ xset -dpms
 matchbox-window-manager &
 while true; do
     rsync -qr --delete --exclude='.Xauthority' /opt/kiosk/ \$HOME/
-    chromium-browser --kiosk $DOMAIN/$URL
+    chromium-browser --kiosk $PROTOCOL://$DOMAIN/$URL
 done" > /home/kiosk/.xsession
     chmod a+x /home/kiosk/.xsession
     cp /home/kiosk/.xsession /home/kiosk/.xinitrc
@@ -78,8 +85,6 @@ if [ ${#WHIPTAILPATH} -eq 0 ]; then
     echo "This script requires Whiptail for its terminal GUI.\n"
     exit 1
 fi
-
-TITLE="Kiosk Setup"
 
 # Ask whether to setup automatic login via client certificates.
 whiptail --title $TITLE --yesno "Would you like to setup automatic login, via certificates, or manual login, via username and password?" 20 60 2 --yes-button "Automatic" --no-button "Manual"
