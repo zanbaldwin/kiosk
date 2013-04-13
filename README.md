@@ -11,10 +11,14 @@ Prerequisites
 
 Installation
 ------------
-
-    wget https://raw.github.com/mynameiszanders/kiosk/master/kiosk.sh --output-document=/tmp/kiosk.sh
-    sudo chmod +x /tmp/kiosk.sh
-    sudo /tmp/kiosk.sh
+```bash
+# Download the Kiosk Setup script.
+wget https://raw.github.com/mynameiszanders/kiosk/master/kiosk.sh --output-document=/tmp/kiosk.sh
+# Enable the script to be executed.
+sudo chmod +x /tmp/kiosk.sh
+# Execute the script.
+sudo /tmp/kiosk.sh
+```
 
 [rpi]: http://www.raspberrypi.org/ "Raspberry Pi; an ARM GNU/Linux box for $25"
 [raspbian]: http://www.raspberrypi.org/downloads "Raspberry Pi Downloads"
