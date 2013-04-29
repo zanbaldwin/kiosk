@@ -8,6 +8,7 @@ Prerequisites
 
 - A [Raspberry Pi][rpi], and a copy of [Raspbian Wheezy][raspbian].
 - An SD card in which have copied the Raspbian Wheezy image over; try using [Win32 Imager][win32imager] (Windows) or [ImageWriter][imagewriter] (Linux).
+- [Whiptail][whiptail], though a check for this is performed and an error message will be shown if this is not installed.
 
 Installation
 ------------
@@ -24,3 +25,4 @@ sudo /tmp/kiosk.sh
 [raspbian]: http://www.raspberrypi.org/downloads "Raspberry Pi Downloads"
 [win32imager]: http://win32diskimager.sourceforge.net/ "Win32 Disk Imager"
 [imagewriter]: https://help.ubuntu.com/community/Installation/FromImgFiles "Installation from IMG files (Ubuntu Community Documentation)"
+[whiptail]: http://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail "Bash Shell Scripting / Whiptail"
