@@ -65,7 +65,7 @@ install_kiosk() {
     # Upgrade existing packages.
     apt-get upgrade -y
     # Install required packages.
-    aptitude install --without-recommends -y xorg slim matchbox-window-manager chromium-browser rsync openssh-server libnss3-tools
+    aptitude install --without-recommends -y xorg slim chromium-browser rsync openssh-server libnss3-tools
 
     # PACKAGE CONFIGURATION
 
