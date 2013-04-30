@@ -50,7 +50,7 @@ install_kiosk() {
         URL_PATH=""
     fi
 
-    whiptail --title $TITLE --yesno "Would you like to setup default Chromium settings, to stop autofill and zoom to 150%?" 20 60 2 --yes-button "Yes" --no-button "No"
+    whiptail --title "$TITLE" --yesno "Would you like to setup default Chromium settings, to stop autofill and zoom to 150%?" 20 60 2 --yes-button "Yes" --no-button "No"
     CHROMESETTINGS=$?
 
     # END OF KIOSK CONFIGURATION. START INSTALLATION.
@@ -162,7 +162,7 @@ if [ ${#WHIPTAILPATH} -eq 0 ]; then
 fi
 
 # Ask whether to setup automatic login via client certificates.
-whiptail --title $TITLE --yesno "Would you like to setup automatic login, via certificates, or manual login, via username and password?" 20 60 2 --yes-button "Automatic" --no-button "Manual"
+whiptail --title "$TITLE" --yesno "Would you like to setup automatic login, via certificates, or manual login, via username and password?" 20 60 2 --yes-button "Automatic" --no-button "Manual"
 AUTOLOGIN=$?
 
 if [ $AUTOLOGIN -eq 0 ]; then
