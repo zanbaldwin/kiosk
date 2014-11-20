@@ -61,7 +61,11 @@ install_kiosk() {
     # Update package repository lists.
     apt-get update
     # Remove unused packages.
-    aptitude purge -y lxappearance lxde lxde-common lxde-core lxde-icon-theme lxinput lxmenu-data lxpanel lxpolkit lxrandr lxsession lxsession-edit lxshortcut lxtask lxterminal xinit xserver-xorg lightdm scratch midori desktop-base desktop-file-utils gnome-icon-theme gnome-themes-standard leafpad menu-xdg omxplayer xarchiver zenity tk8.5 pcmanfm blt idle idle3 python-tk python3-tk dillo openbox gvfs gvfs-backends gvfs-common gvfs-daemons gvfs-fuse gvfs-libs pistore obconf
+    whiptail --title "$TITLE" --yesno "Would you like to purge unnecessary packages? It might be best not to do this if you're not sure." 20 60 2 --yes-button "Yes" --no-button "No"
+    PURGEPACKAGES=$?
+    if [ $PURGEPACKAGES -eq 0 ]; then
+        aptitude purge -y lxappearance lxde lxde-common lxde-core lxde-icon-theme lxinput lxmenu-data lxpanel lxpolkit lxrandr lxsession lxsession-edit lxshortcut lxtask lxterminal xinit xserver-xorg lightdm scratch midori desktop-base desktop-file-utils gnome-icon-theme gnome-themes-standard leafpad menu-xdg omxplayer xarchiver zenity tk8.5 pcmanfm blt idle idle3 python-tk python3-tk dillo openbox gvfs gvfs-backends gvfs-common gvfs-daemons gvfs-fuse gvfs-libs pistore obconf
+    fi
     # Upgrade existing packages.
     apt-get upgrade -y
     # Install required packages.
